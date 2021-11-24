@@ -1,0 +1,53 @@
+{
+  "contractName": "DeBridgeGate",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_tokenAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_chainIdTo",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes",
+          "name": "_receiver",
+          "type": "bytes"
+        },
+        {
+          "internalType": "bytes",
+          "name": "_permit",
+          "type": "bytes"
+        },
+        {
+          "internalType": "bool",
+          "name": "_useAssetFee",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint32",
+          "name": "_referralCode",
+          "type": "uint32"
+        },
+        {
+          "internalType": "bytes",
+          "name": "_autoParams",
+          "type": "bytes"
+        }
+      ],
+      "name": "send",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    }
+  ]
+}
