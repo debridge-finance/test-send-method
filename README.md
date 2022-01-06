@@ -1,23 +1,17 @@
-# deBridge send method demo
-This repository demonstrates how to call send method of deBridge smart contract <br />
-Demo script is configured to transfer deWETH token from BSC blockchain to Kovan <br />
-To send other tokens change <br />
+# deBridge sendETH/sendERC20/Claim method demo
+This repository demonstrates how to call send/claim methods of deBridge smart contract <br />
+1. ```yarn install``` <br />
+2. Configure .env file use .env.testnet / .env.mainnet as example<br />
+Required to set
 ```
- await testSend(
-            toWei("0.01"), // fixed fee for transfer
-            "0x2ce407ed308faddcffbfd9eec241bb698d29aadf",//address _tokenAddress,
-            toWei("0.001"), // token _amount
-            42,// _chainIdTo kovan
-            senderAddress, //_receiver
-            "0x", // _permit
-            false, //_useAssetFee
-            1, //_referralCode
-            "0x" //_autoParams
-            );
+PRIVATE_KEY=""
+SENDER_ADDRESS=""
 ```
-
-1. Approve spending limit for deBridgeGate smart contract: DEBRIDGEGATE_ADDRESS="0x68D936Cb4723BdD38C488FD50514803f96789d2D"
-2. Configure .env (cp .env.example .env)
-3. ```yarn install```
-4. ```node .\send.js``` for start
-
+3. ```node .\sendETH.js``` to send ETH <br />
+Approve spending limit for deBridgeGate smart contract before transfer ERC20:<br />
+then you can run 
+```node .\sendERC20.js``` to send ETH <br />
+Find your submission in our explorers
+https://testnet-explorer.debridge.finance/
+https://mainnet-explorer.debridge.finance/
+4. Claim ```node .\claim.js submissionId``` set submissionId as command args
