@@ -41,7 +41,9 @@ const logger = log4js.getLogger('claim');
 // const debridgeGateInstance = new web3.eth.Contract(DeBridgeGateAbi, debridgeGateAddderss);
 
 const privKey = process.env.PRIVATE_KEY;
-const senderAddress = process.env.SENDER_ADDRESS;
+const account = new Web3().eth.accounts.privateKeyToAccount(privKey);
+const senderAddress =  account.address;
+logger.info(`senderAddress : ${senderAddress}`);
 
 // logger.info(`ChainId from: ${chainIdFrom}`);
 // logger.info(`ChainId to: ${chainIdTo}`);

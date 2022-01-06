@@ -44,12 +44,14 @@ const debridgeGateAddderss = process.env.DEBRIDGEGATE_ADDRESS;
 const debridgeGateInstance = new web3.eth.Contract(DeBridgeGateAbi, debridgeGateAddderss);
 
 const privKey = process.env.PRIVATE_KEY;
-const senderAddress = process.env.SENDER_ADDRESS;
+const account = web3.eth.accounts.privateKeyToAccount(privKey);
+const senderAddress =  account.address;
 
 logger.info(`ChainId from: ${chainIdFrom}`);
 logger.info(`ChainId to: ${chainIdTo}`);
 logger.info(`Amount: ${amount}`);
 logger.info(`RPC : ${rpc}`);
+logger.info(`senderAddress : ${senderAddress}`);
 
 (async () => {
     try {
