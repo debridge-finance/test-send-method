@@ -1,5 +1,3 @@
-# Demo Scripts of Interaction with deBridge Protocol
-
 <br/>
 <p align="center">
 <a href="https://debridge.finance/" target="_blank">
@@ -10,6 +8,8 @@
 
 [deBridge](https://debridge.finance/) — cross-chain interoperability
  and liquidity transfer protocol that allows the truly decentralized transfer of data and assets between various blockchains.
+
+# Demo Scripts of Interaction with deBridge Protocol
 
 This repository demonstrates how to interact with deBridge infrastructure in order to send arbitrary data and liquidity between any blockchains supported by the protocol
 
