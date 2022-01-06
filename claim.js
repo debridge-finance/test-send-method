@@ -181,13 +181,13 @@ async function claim(
             .encodeABI(),
     };
 
-    logger.info(JSON.stringify(tx));
+    logger.info("Tx", tx);
     const signedTx = await web3.eth.accounts.signTransaction(tx, privKey);
-    logger.info(signedTx);
-    logger.info(JSON.stringify(signedTx));
+    logger.info("Signed tx", signedTx);
 
     let result = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
-    logger.info(JSON.stringify(result));
+    logger.info("Result", result);
+    logger.info("Success");
 }
 
 

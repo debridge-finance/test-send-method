@@ -143,11 +143,14 @@ async function send(
 
 
 
-    logger.info(JSON.stringify(tx));
+    logger.info("Tx", tx);
     const signedTx = await web3.eth.accounts.signTransaction(tx, privKey);
-    logger.info(signedTx);
-    logger.info(JSON.stringify(signedTx));
+    logger.info("Signed tx", signedTx);
 
     let result = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
-    logger.info(JSON.stringify(result));
+    logger.info("Result", result);
+    var logs = result.logs.find(l=>l.address===debridgeGateAddderss);
+    const submissionId = logs.data.substring(0, 66);
+    logger.info(`SUBMISSION ID ${submissionId}`);
+    logger.info("Success");
 }
