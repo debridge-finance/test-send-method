@@ -5,6 +5,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@types/dotenv-flow": "^3.2.0",
     "bignumber.js": "^9.0.1",
     "dotenv-flow": "^3.2.0",
     "ethers": "^5.4.7",
