@@ -16,11 +16,11 @@ This repository demonstrates how to interact with deBridge infrastructure in ord
 In order to run scripts please configure your local environment first:
 
 1. ```yarn install``` <br />
-2. Configure .env files — .env.testnet or .env.mainnet for the testnet and mainnet environments respectively
+2. Configure .env file — copy values from .env.testnet or .env.mainnet for the testnet and mainnet environments respectively
 
 ## Sending of the Base Asset
 
-```node .\sendETH.js``` to send base asset of the blockchain where the transaction is initiated
+```yarn sendETH``` to send base asset of the blockchain where the transaction is initiated
 You will see the following output:
 ![telegram-cloud-photo-size-2-5384605653412199381-y](https://user-images.githubusercontent.com/10200871/148461193-b7039b8f-99f9-4d61-8fd8-69d08a44a566.jpg)
 
@@ -29,7 +29,7 @@ Please note  the resulted SubmissionID which will be needed during the claim ste
 ## Sending of the ERC-20 token
 
 1. Approve spending limit for deBridgeGate smart contract before the token transfer. The address of the smart contract can be found in .env file
-2. run ```node .\sendERC20.js``` to send ERC-20 token
+2. run ```yarn sendERC20``` to send ERC-20 token
 
 Please note  the resulted SubmissionID which will be needed during the claim step
 
@@ -46,4 +46,4 @@ The protocol implements [locking and minting](https://docs.debridge.finance/the-
 In order to have the transaction executed in the target chain, you should claim it by passing all parameters of the transaction alongside signatures of submissionId from all deBridge validators. 
 
 In order to claim transaction execute
-```node .\claim.js submissionId``` with submissionId of the transaction passed as an argument
+```yarn claim submissionId``` with submissionId of the transaction passed as an argument

@@ -4,7 +4,9 @@
   "repository": "",
   "author": "",
   "license": "MIT",
+  "type": "module",
   "dependencies": {
+    "@openzeppelin/contracts": "^4.4.1",
     "axios": "^0.24.0",
     "bignumber.js": "^9.0.1",
     "dotenv-flow": "^3.2.0",
@@ -14,6 +16,8 @@
     "web3-utils": "^1.6.0"
   },
   "scripts": {
-    "start": "node send.js"
+    "sendERC20": "node --experimental-json-modules sendERC20.js",
+    "sendETH": "node --experimental-json-modules sendETH.js",
+    "claim": "node --experimental-json-modules claim.js"
   }
 }
