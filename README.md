@@ -28,8 +28,7 @@ Please note  the resulted SubmissionID which will be needed during the claim ste
 
 ## Sending of the ERC-20 token
 
-1. Approve spending limit for deBridgeGate smart contract before the token transfer. The address of the smart contract can be found in .env file
-2. run ```yarn sendERC20``` to send ERC-20 token
+1. run ```yarn sendERC20``` to send ERC-20 token
 
 Please note  the resulted SubmissionID which will be needed during the claim step
 
