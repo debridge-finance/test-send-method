@@ -58,7 +58,11 @@ logger.info(`RPC : ${rpc}`);
 logger.info(`senderAddress : ${senderAddress}`);
 
 const main = async () => {
-    await approve();
+    const allowance = await getAllowance();
+    if (allowance < toWei(amount)){
+        logger.info(`Insufficient allowance ${allowance} for token ${tokenAddress}, calling approve`);
+        await approve();
+    }
     await send(
         toWei("0.01"), // fix fee for transfer
         tokenAddress,//address _tokenAddress,
@@ -73,6 +77,11 @@ const main = async () => {
 }
 
 main().catch(e => console.error(e));
+
+async function getAllowance() {
+    const allowanceString = await tokenInstance.methods.allowance(senderAddress, debridgeGateAddress).call();
+    return parseInt(allowanceString);
+}
 
 async function approve() {
     logger.info(`Approving token ${tokenAddress}, amount: ${amount}`);
