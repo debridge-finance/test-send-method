@@ -62,7 +62,7 @@ send(
     false, //_useAssetFee
     0, //_referralCode
     "0x" //_autoParams
-).catch(e => console.error(e))
+).catch(e => logger.error(e))
 
 
 async function send(

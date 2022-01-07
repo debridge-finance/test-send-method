@@ -5,7 +5,7 @@ import IERC20Json from "@openzeppelin/contracts/build/contracts/IERC20.json"
 import log4js from "log4js";
 import web3Utils from "web3-utils";
 const {toWei} = web3Utils;
-
+const UINT_MAX_VALUE = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 config();
 
 const Web3RpcUrl = {
@@ -61,7 +61,7 @@ const main = async () => {
     const allowance = await getAllowance();
     if (allowance < toWei(amount)){
         logger.info(`Insufficient allowance ${allowance} for token ${tokenAddress}, calling approve`);
-        await approve();
+        await approve(UINT_MAX_VALUE);
     }
     await send(
         toWei("0.01"), // fix fee for transfer
@@ -76,25 +76,26 @@ const main = async () => {
     );
 }
 
-main().catch(e => console.error(e));
+main().catch(e => logger.error(e));
 
 async function getAllowance() {
     const allowanceString = await tokenInstance.methods.allowance(senderAddress, debridgeGateAddress).call();
     return parseInt(allowanceString);
 }
 
-async function approve() {
-    logger.info(`Approving token ${tokenAddress}, amount: ${amount}`);
+async function approve(newAllowance) {
+    logger.info(`Approving token ${tokenAddress}, amount: ${newAllowance}`);
     const nonce = await web3.eth.getTransactionCount(senderAddress);
     logger.info("Approve nonce current", nonce);
     const gasPrice = await web3.eth.getGasPrice();
     logger.info("Approve gasPrice", gasPrice.toString());
 
-    const estimateGas = await tokenInstance.methods
+    let estimateGas = await tokenInstance.methods
         .approve(debridgeGateAddress, toWei(amount))
         .estimateGas({from: senderAddress})
     ;
-
+    // sometimes not enough estimateGas
+    estimateGas = estimateGas*2;
     logger.info("Approve estimateGas", estimateGas.toString());
 
     const tx = {
@@ -104,7 +105,7 @@ async function approve() {
             value: 0,
             gasPrice,
             nonce,
-            data: tokenInstance.methods.approve(debridgeGateAddress, toWei(amount)).encodeABI(),
+            data: tokenInstance.methods.approve(debridgeGateAddress, newAllowance).encodeABI(),
         };
 
     logger.info("Approve tx", tx);

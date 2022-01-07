@@ -92,7 +92,7 @@ logger.info(`SUBMISSION_ID : ${SUBMISSION_ID}`);
             autoParamsFrom,
         );
     } catch (e) {
-        console.log(e);
+        logger.error(e);
     }
 })();
 
