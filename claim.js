@@ -1,8 +1,10 @@
-require("dotenv-flow").config();
-const { toWei } = require("web3-utils");
-const Web3 = require("web3");
-const DeBridgeGateAbi = require("./precompiles/DeBridgeGate.json").abi;
-const apiService = require('./apiService');
+import {config} from "dotenv-flow";
+import Web3 from "web3";
+import DeBridgeGateJson from "./precompiles/DeBridgeGate.json";
+import log4js from "log4js";
+import {getSubmission, getSubmissionConfirmations} from "./apiService.js";
+
+config();
 
 const Web3RpcUrl = {
     1: 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161', // //ETH Mainnet
@@ -17,7 +19,6 @@ const Web3RpcUrl = {
     421611: 'https://rinkeby.arbitrum.io/rpc', // //arbitrum Testnet
 };
 
-const log4js = require('log4js');
 log4js.configure(
     {
         appenders: {
@@ -32,26 +33,14 @@ log4js.configure(
 );
 
 const logger = log4js.getLogger('claim');
-// const chainIdFrom = process.env.CHAIN_ID_FROM;
-// const chainIdTo = process.env.CHAIN_ID_TO;
-// const amount = process.env.AMOUNT;
-// const rpc = Web3RpcUrl[chainIdFrom];
-// const web3 = new Web3(rpc);
-// const DEBRIDGEGATE_ADDRESS = process.env.DEBRIDGEGATE_ADDRESS;
-// const debridgeGateInstance = new web3.eth.Contract(DeBridgeGateAbi, debridgeGateAddderss);
 
 const privKey = process.env.PRIVATE_KEY;
 const account = new Web3().eth.accounts.privateKeyToAccount(privKey);
 const senderAddress =  account.address;
 logger.info(`senderAddress : ${senderAddress}`);
 
-// logger.info(`ChainId from: ${chainIdFrom}`);
-// logger.info(`ChainId to: ${chainIdTo}`);
-// logger.info(`Amount: ${amount}`);
-// logger.info(`RPC : ${rpc}`);
-
-const DEBRIDGEGATE_ADDRESS = process.env.DEBRIDGEGATE_ADDRESS;
-if (process.argv.length != 3) {
+const {DEBRIDGEGATE_ADDRESS, API_ENDPOINT} = process.env;
+if (process.argv.length !== 3) {
     logger.error('Add submission id args');
 }
 const SUBMISSION_ID = process.argv[2];
@@ -60,7 +49,7 @@ logger.info(`SUBMISSION_ID : ${SUBMISSION_ID}`);
 (async () => {
     try {
         //get submission
-        const submission = await apiService.getSubmission(SUBMISSION_ID);
+        const submission = await getSubmission(SUBMISSION_ID, API_ENDPOINT);
         if (!submission) {
             logger.error(`Submission not found`);
             return;
@@ -76,7 +65,7 @@ logger.info(`SUBMISSION_ID : ${SUBMISSION_ID}`);
         const rpc = Web3RpcUrl[chainIdTo];
         const web3 = new Web3(rpc);
 
-        const debridgeGateInstance = new web3.eth.Contract(DeBridgeGateAbi, DEBRIDGEGATE_ADDRESS);
+        const debridgeGateInstance = new web3.eth.Contract(DeBridgeGateJson.abi, DEBRIDGEGATE_ADDRESS);
         const isSubmissionUsed = await debridgeGateInstance.methods.isSubmissionUsed(SUBMISSION_ID).call();
 
         if (isSubmissionUsed) {
@@ -122,7 +111,7 @@ async function claim(
     logger.info("Test claim");
     let nonce = await web3.eth.getTransactionCount(senderAddress);
     logger.info("Nonce current", nonce);
-    gasPrice = await web3.eth.getGasPrice();
+    const gasPrice = await web3.eth.getGasPrice();
     logger.info("gasPrice", gasPrice.toString());
     logger.info({
         debridgeId, //bytes32 _debridgeId,
@@ -151,7 +140,7 @@ async function claim(
 
     logger.info("estimateGas", estimateGas.toString());
 
-    let tx =
+    const tx =
     {
         from: senderAddress,
         to: DEBRIDGEGATE_ADDRESS,
@@ -185,14 +174,14 @@ async function claim(
     const signedTx = await web3.eth.accounts.signTransaction(tx, privKey);
     logger.info("Signed tx", signedTx);
 
-    let result = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+    const result = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
     logger.info("Result", result);
     logger.info("Success");
 }
 
 
 async function _checkConfirmation(submissionId, minConfirmations) {
-    const confirmations = await apiService.getSubmissionConfirmations(submissionId);
+    const confirmations = await getSubmissionConfirmations(submissionId, API_ENDPOINT);
     return {
         isConfirmed: (confirmations.length >= minConfirmations),
         confirmations,
