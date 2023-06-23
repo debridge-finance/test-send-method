@@ -11,6 +11,7 @@
     "bignumber.js": "^9.0.1",
     "dotenv-flow": "^3.2.0",
     "ethers": "^5.4.7",
+    "fs": "^0.0.1-security",
     "log4js": "^6.3.0",
     "web3": "^1.3.1",
     "web3-utils": "^1.6.0"
@@ -18,6 +19,7 @@
   "scripts": {
     "sendERC20": "node --experimental-json-modules sendERC20.js",
     "sendETH": "node --experimental-json-modules sendETH.js",
-    "claim": "node --experimental-json-modules claim.js"
+    "claim": "node --experimental-json-modules claim.js",
+    "createSafe": "node --experimental-json-modules createSafe.js"
   }
 }
